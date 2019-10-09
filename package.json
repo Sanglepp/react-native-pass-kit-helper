@@ -2,7 +2,7 @@
   "name": "react-native-pass-kit-helper",
   "title": "React Native Pass Kit Helper",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "Suppress apple pay in React-Native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
