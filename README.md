@@ -5,7 +5,7 @@
 
 ## Getting started
 
-`$ npm install react-native-pass-kit-helper --save`
+`$ yarn add react-native-pass-kit-helper`
 
 ### Mostly automatic installation React-Native <0.60.0
 
