@@ -1,7 +1,7 @@
 # react-native-pass-kit-helper
 
 > ### Important!
->This method requires a special entitlement issued by Apple. If the entitlement is not present, the request will fail. For more information, see developer.apple.com/apple-pay/.
+>This method requires a special entitlement issued by Apple. If the entitlement is not present, the request will fail. For more information, see [Apple Developer - Apple Pay](https://developer.apple.com/apple-pay/).
 
 ## Getting started
 
