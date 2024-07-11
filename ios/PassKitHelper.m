@@ -19,29 +19,66 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(suppressApplePay)
+RCT_EXPORT_METHOD(suppressApplePay:(RCTResponseSenderBlock)callback)
 {
     if (@available(iOS 9, *)) {
         // iOS 9 (or newer) ObjC code
         if ([PKPassLibrary isPassLibraryAvailable] && ![PKPassLibrary isSuppressingAutomaticPassPresentation]) {
             tokenPKSuppresion = [PKPassLibrary requestAutomaticPassPresentationSuppressionWithResponseHandler:^(PKAutomaticPassPresentationSuppressionResult result) {
-                if (result == PKAutomaticPassPresentationSuppressionResultSuccess) {
-                    RCTLogInfo(@"Automatic Pass Presentation suppressed");
-                } else {
-                    RCTLogInfo(@"Could not suppress Automatic Pass Presentation");
-                }
+                    switch (result) {
+                        case PKAutomaticPassPresentationSuppressionResultSuccess:
+                            RCTLogInfo(@"Automatic Pass Presentation suppressed");
+                            callback(@[@(result)]);
+                            break;
+                        case PKAutomaticPassPresentationSuppressionResultDenied:
+                            RCTLogInfo(@"Automatic Pass Presentation suppression denied");
+                            callback(@[@(result)]);
+                            break;
+                        case PKAutomaticPassPresentationSuppressionResultCancelled:
+                            RCTLogInfo(@"Automatic Pass Presentation suppression cancelled");
+                            callback(@[@(result)]);
+                            break;
+                        case PKAutomaticPassPresentationSuppressionResultNotSupported:
+                            RCTLogInfo(@"Automatic Pass Presentation suppression not supported");
+                            callback(@[@(result)]);
+                            break;
+                        case PKAutomaticPassPresentationSuppressionResultAlreadyPresenting:
+                            RCTLogInfo(@"Automatic Pass Presentation suppression already presenting");
+                            callback(@[@(result)]);
+                            break;
+                    }
             }];
+        } else {
+            RCTLogInfo(@"Automatic Pass Library not supported");
+            callback(@[@(PKAutomaticPassPresentationSuppressionResultDenied)]);
         }
+    } else {
+        RCTLogInfo(@"iOS 9 lower not supported");
+        callback(@[@(PKAutomaticPassPresentationSuppressionResultDenied)]);
     }
 }
 
-RCT_EXPORT_METHOD(enableApplePay)
+RCT_EXPORT_METHOD(enableApplePay:(RCTResponseSenderBlock)callback)
 {
+    RCTLogInfo(@"enable çağrıldı");
+
     if (@available(iOS 9, *)) {
         if ([PKPassLibrary isPassLibraryAvailable] && [PKPassLibrary isSuppressingAutomaticPassPresentation]) {
             [PKPassLibrary endAutomaticPassPresentationSuppressionWithRequestToken:tokenPKSuppresion];
             RCTLogInfo(@"Automatic Pass Presentation enabled");
+            callback(@[@3]);
+        }else {
+            if([PKPassLibrary isSuppressingAutomaticPassPresentation]){
+                RCTLogInfo(@"Automatic Pass already presenting");
+                callback(@[@1]);
+            }else if([PKPassLibrary isPassLibraryAvailable]){
+                RCTLogInfo(@"Automatic Pass library is not available");
+                callback(@[@2]);
+            }
         }
+    }else {
+        RCTLogInfo(@"iOS 9 lower not supported");
+        callback(@[@0]);
     }
 }
 

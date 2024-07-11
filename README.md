@@ -28,15 +28,54 @@ import PassKitHelper from 'react-native-pass-kit-helper';
 
 // to suppress apple pay
 
-	if (Platform.OS === 'ios') {
-		PassKitHelper.suppressApplePay();
-	}
+if (Platform.OS === "ios") {
+  PassKitHelper.suppressApplePay((result) => {
+    switch (result) {
+      case 0:
+        console.log(
+          "Apple pay automatic presentation suppression not supported"
+        );
+        break;
+      case 1:
+        console.log("Apple pay automatic presentation already suppressed");
+        break;
+      case 2:
+        console.log("Apple pay automatic presentation suppression denied");
+        break;
+      case 3:
+        console.log("Apple pay automatic presentation suppression cancelled");
+        break;
+      case 4:
+        console.log("Apple pay automatic presentation suppressed successfully");
+        break;
+      default:
+        console.log("Unknown result");
+    }
+  });
+}
 
 // to enable apple pay
 
- if (Platform.OS === 'ios') {
-		PassKitHelper.enableApplePay();
-	}
+if (Platform.OS === "ios") {
+  PassKitHelper.enableApplePay((result) => {
+    switch (result) {
+      case 0:
+        console.log("iOS level under 9 (not supported)");
+        break;
+      case 1:
+        console.log("Apple pay presentation already enabled");
+        break;
+      case 2:
+        console.log("Apple pay not supported");
+        break;
+      case 3:
+        console.log("Apple pay automatic presentation activated");
+        break;
+      default:
+        console.log("Unknown result");
+    }
+  });
+}
 
 
 ```
