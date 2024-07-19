@@ -60,8 +60,6 @@ RCT_EXPORT_METHOD(suppressApplePay:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(enableApplePay:(RCTResponseSenderBlock)callback)
 {
-    RCTLogInfo(@"enable çağrıldı");
-
     if (@available(iOS 9, *)) {
         if ([PKPassLibrary isPassLibraryAvailable] && [PKPassLibrary isSuppressingAutomaticPassPresentation]) {
             [PKPassLibrary endAutomaticPassPresentationSuppressionWithRequestToken:tokenPKSuppresion];
